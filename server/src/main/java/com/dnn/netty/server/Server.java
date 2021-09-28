@@ -7,8 +7,12 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.http.HttpRequestDecoder;
+import io.netty.handler.codec.http.HttpRequestEncoder;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
+
+import java.net.InetAddress;
 
 public class Server {
     private static final String PORT = System.getenv("PORT");
@@ -31,8 +35,8 @@ public class Server {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline().addLast(
-                                new StringDecoder(),
-                                new StringEncoder(),
+                                new HttpRequestDecoder(),
+                                new HttpRequestEncoder(),
                                 new ServerDecoder()
                             );
                         }
@@ -40,6 +44,7 @@ public class Server {
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
             ChannelFuture future = server.bind(Integer.parseInt(PORT)).sync();
             System.out.println("Server is ready on port " + PORT);
+
             future.channel().closeFuture().sync();
         } finally {
             System.out.println("Server is closed");

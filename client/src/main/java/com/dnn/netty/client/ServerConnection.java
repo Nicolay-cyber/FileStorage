@@ -15,8 +15,8 @@ import java.net.SocketException;
 
 public class ServerConnection {
     private io.netty.channel.socket.SocketChannel channel = null;
-    private static final int PORT = 9000;
-    private static final String HOST = "localhost";
+    private static final int PORT = 19420;
+    private static final String HOST = "https://file-storagge.herokuapp.com";
     boolean isConnectionReady = false;
     public ServerConnection(){
         new Thread(() ->{
