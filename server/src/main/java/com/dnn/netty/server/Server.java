@@ -11,8 +11,8 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 
 public class Server {
-    //private static final String PORT = System.getenv("PORT");
-    private static final int PORT = 9000;
+    private static final String PORT = System.getenv("PORT");
+    //private static final int PORT = 9000;
     private static final String HOST = "localhost";
 
     public static void main(String[] args) throws InterruptedException {
@@ -38,7 +38,7 @@ public class Server {
                         }
                     })
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
-            ChannelFuture future = server.bind(HOST,PORT).sync();
+            ChannelFuture future = server.bind(HOST,Integer.parseInt(PORT)).sync();
             System.out.println("Server is ready on port " + "9000");
             future.channel().closeFuture().sync();
         } finally {
