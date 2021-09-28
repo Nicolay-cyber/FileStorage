@@ -38,8 +38,8 @@ public class Server {
                         }
                     })
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
-            ChannelFuture future = server.bind(HOST,Integer.parseInt(PORT)).sync();
-            System.out.println("Server is ready on port " + "9000");
+            ChannelFuture future = server.bind(Integer.parseInt(PORT)).sync();
+            System.out.println("Server is ready on port " + PORT);
             future.channel().closeFuture().sync();
         } finally {
             System.out.println("Server is closed");
