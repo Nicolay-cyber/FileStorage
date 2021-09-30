@@ -1,5 +1,6 @@
 package com.dnn.netty.server;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -13,6 +14,7 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class Server {
     private static final String PORT = System.getenv("PORT");
@@ -31,21 +33,24 @@ public class Server {
             server
                     .group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
-                    .childHandler(new ChannelInitializer<SocketChannel>() {
+                    .childHandler(new ChannelInitializer() {
                         @Override
-                        protected void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(
-                                new HttpRequestDecoder(),
-                                new HttpRequestEncoder(),
-                                new ServerDecoder()
+                        protected void initChannel(Channel channel) throws Exception {
+                            channel.pipeline().addLast(
+                                    new StringDecoder(),
+                                    new StringEncoder(),
+                                    new ServerDecoder()
                             );
                         }
                     })
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
             ChannelFuture future = server.bind(Integer.parseInt(PORT)).sync();
             System.out.println("Server is ready on port " + PORT);
+            System.out.println("host: " + InetAddress.getLocalHost().getHostAddress());
 
             future.channel().closeFuture().sync();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
         } finally {
             System.out.println("Server is closed");
             bossGroup.shutdownGracefully();
