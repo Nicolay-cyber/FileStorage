@@ -37,8 +37,8 @@ public class Server {
                         @Override
                         protected void initChannel(Channel channel) throws Exception {
                             channel.pipeline().addLast(
-                                    new StringDecoder(),
-                                    new StringEncoder(),
+                                    new HttpRequestDecoder(),
+                                    new HttpRequestEncoder(),
                                     new ServerDecoder()
                             );
                         }

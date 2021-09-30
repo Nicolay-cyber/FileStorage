@@ -15,8 +15,8 @@ import java.net.SocketException;
 
 public class ServerConnection {
     private io.netty.channel.socket.SocketChannel channel = null;
-    private static final int PORT = 19420;
-    private static final String HOST = "https://file-storagge.herokuapp.com";
+    private static final int PORT = 7382;
+    private static final String HOST = "172.17.29.138";
     boolean isConnectionReady = false;
     public ServerConnection(){
         new Thread(() ->{
@@ -39,7 +39,11 @@ public class ServerConnection {
                 ChannelFuture future = client.connect(HOST, PORT).sync();
                 System.out.println("Client is started");
                 isConnectionReady = true;
-                future.channel().closeFuture().sync();
+                while (true){
+                    channel.writeAndFlush("HI!");
+                    Thread.sleep(3000);
+                }
+                //future.channel().closeFuture().sync();
             } catch (InterruptedException e) {
                 System.out.println("!!");
             }
