@@ -39,7 +39,9 @@ public class ServerDecoder extends SimpleChannelInboundHandler<Object> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) {
+        System.out.println(msg.getClass().getName());
         if (msg instanceof HttpRequest) {
+            System.out.println("It's HttpRequest");
             HttpRequest request = this.request = (HttpRequest) msg;
 
             if (HttpUtil.is100ContinueExpected(request)) {
@@ -53,6 +55,8 @@ public class ServerDecoder extends SimpleChannelInboundHandler<Object> {
         responseData.append(RequestUtils.evaluateDecoderResult(request));
 
         if (msg instanceof HttpContent) {
+            System.out.println("It's HttpContent");
+
             HttpContent httpContent = (HttpContent) msg;
 
             responseData.append(RequestUtils.formatBody(httpContent));

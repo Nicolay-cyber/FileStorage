@@ -7,6 +7,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.http.HttpRequestDecoder;
+import io.netty.handler.codec.http.HttpRequestEncoder;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 
@@ -15,8 +17,8 @@ import java.net.SocketException;
 
 public class ServerConnection {
     private io.netty.channel.socket.SocketChannel channel = null;
-    private static final int PORT = 7382;
-    private static final String HOST = "172.17.29.138";
+    private static final int PORT = 17862;
+    private static final String HOST = "172.16.198.182";
     boolean isConnectionReady = false;
     public ServerConnection(){
         new Thread(() ->{
@@ -30,9 +32,9 @@ public class ServerConnection {
                             protected void initChannel(SocketChannel ch) throws Exception {
                                 channel = ch;
                                 ch.pipeline().addLast(
-                                    new StringDecoder(),
-                                    new StringEncoder(),
-                                    new ClientDecoder()
+                                    new HttpRequestDecoder(),
+                                    new HttpRequestEncoder()
+                                        //new ClientDecoder()
                                 );
                             }
                         });
