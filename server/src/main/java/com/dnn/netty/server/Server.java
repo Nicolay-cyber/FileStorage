@@ -5,21 +5,16 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.http.HttpRequestDecoder;
-import io.netty.handler.codec.http.HttpRequestEncoder;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldPrepender;
+import io.netty.handler.codec.bytes.ByteArrayDecoder;
+import io.netty.handler.codec.bytes.ByteArrayEncoder;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
 public class Server {
-    private static final String PORT = System.getenv("PORT");
-    //private static final int PORT = 9000;
-    private static final String HOST = "localhost";
+    private static final int PORT = 9000;
 
     public static void main(String[] args) throws InterruptedException {
         new Server().start();
@@ -37,20 +32,26 @@ public class Server {
                         @Override
                         protected void initChannel(Channel channel) throws Exception {
                             channel.pipeline().addLast(
-                                    new HttpRequestDecoder(),
-                                    new HttpRequestEncoder(),
-                                    new ServerDecoder()
+                                    new LengthFieldBasedFrameDecoder(
+                                            1024 * 1024 * 1024,
+                                            0,
+                                            8,
+                                            0,
+                                            8
+                                    ),
+                                    new LengthFieldPrepender(8),
+                                    new ByteArrayDecoder(),
+                                    new ByteArrayEncoder(),
+                                    new JsonDecoder(),
+                                    new JsonEncoder(),
+                                    new FileHandler()
                             );
                         }
                     })
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
-            ChannelFuture future = server.bind(Integer.parseInt(PORT)).sync();
-            System.out.println("Server is ready on port " + PORT);
-            System.out.println("host: " + InetAddress.getLocalHost().getHostAddress());
-
+            ChannelFuture future = server.bind(PORT).sync();
+            System.out.println("Server is ready");
             future.channel().closeFuture().sync();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
         } finally {
             System.out.println("Server is closed");
             bossGroup.shutdownGracefully();
