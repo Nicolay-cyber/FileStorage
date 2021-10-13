@@ -6,7 +6,7 @@ import io.netty.handler.codec.MessageToMessageEncoder;
 
 import java.util.List;
 
-public class JsonEncoder extends MessageToMessageEncoder<Response> {
+public class ResponseEncoder extends MessageToMessageEncoder<Response> {
     ObjectMapper om = new ObjectMapper();
 
     @Override

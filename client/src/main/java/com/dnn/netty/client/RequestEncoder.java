@@ -1,18 +1,19 @@
-package com.dnn.netty.server;
+package com.dnn.netty.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
+import io.netty.handler.codec.MessageToMessageEncoder;
 
 import java.util.List;
 
-public class JsonDecoder extends MessageToMessageDecoder<byte[]> {
+public class RequestEncoder extends MessageToMessageEncoder<Request> {
     ObjectMapper om = new ObjectMapper();
 
     @Override
-    protected void decode(ChannelHandlerContext ctx, byte[] msg, List<Object> out) throws Exception {
-        Request request = om.readValue(msg, Request.class);
-        out.add(request);
+    protected void encode(ChannelHandlerContext ctx, Request msg, List<Object> out) throws Exception {
+        byte[] bytes = om.writeValueAsBytes(msg);
+        out.add(bytes);
     }
 
     @Override
