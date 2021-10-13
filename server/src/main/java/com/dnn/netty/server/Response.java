@@ -1,9 +1,18 @@
 package com.dnn.netty.server;
 
 public class Response {
+    private String response;
     private String filename;
     private long position;
     private byte[] file;
+
+    public String getResponse() {
+        return response;
+    }
+
+    public void setResponse(String response) {
+        this.response = response;
+    }
 
     public String getFilename() {
         return filename;

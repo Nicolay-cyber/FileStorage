@@ -1,4 +1,5 @@
 package com.dnn.netty.server;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -10,28 +11,24 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.codec.bytes.ByteArrayDecoder;
 import io.netty.handler.codec.bytes.ByteArrayEncoder;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
 
 public class Server {
-    private static final int PORT = 9000;
-
     public static void main(String[] args) throws InterruptedException {
         new Server().start();
     }
 
-    private void start() throws InterruptedException {
+    public void start() throws InterruptedException {
         NioEventLoopGroup bossGroup = new NioEventLoopGroup(1);
         NioEventLoopGroup workerGroup = new NioEventLoopGroup();
-        try{
-            ServerBootstrap server = new ServerBootstrap();
-            server
-                    .group(bossGroup, workerGroup)
+
+        try {
+            ServerBootstrap serverBootstrap = new ServerBootstrap();
+            serverBootstrap.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
-                    .childHandler(new ChannelInitializer() {
+                    .childHandler(new ChannelInitializer<Channel>() {
                         @Override
-                        protected void initChannel(Channel channel) throws Exception {
-                            channel.pipeline().addLast(
+                        protected void initChannel(Channel ch) throws Exception {
+                            ch.pipeline().addLast(
                                     new LengthFieldBasedFrameDecoder(
                                             1024 * 1024 * 1024,
                                             0,
@@ -42,20 +39,20 @@ public class Server {
                                     new LengthFieldPrepender(8),
                                     new ByteArrayDecoder(),
                                     new ByteArrayEncoder(),
-                                    new JsonDecoder(),
-                                    new JsonEncoder(),
-                                    new FileHandler()
+                                    new RequestDecoder(),
+                                    new ResponseEncoder(),
+                                    new RequestWorker()
                             );
                         }
                     })
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
-            ChannelFuture future = server.bind(PORT).sync();
+
+            ChannelFuture channelFuture = serverBootstrap.bind(8089).sync();
             System.out.println("Server is ready");
-            future.channel().closeFuture().sync();
+            channelFuture.channel().closeFuture().sync();
         } finally {
-            System.out.println("Server is closed");
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }
-}
+    }
 }
