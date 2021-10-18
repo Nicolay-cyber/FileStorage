@@ -2,7 +2,7 @@ package com.dnn.netty.server;
 
 public class Request {
     private String command;
-    private String filename;
+    private String cmdComment;
     private byte[] file;
     private long position;
 
@@ -14,13 +14,12 @@ public class Request {
         this.position = position;
     }
 
-
-    public String getFilename() {
-        return filename;
+    public String getCmdComment() {
+        return cmdComment;
     }
 
-    public void setFilename(String filename) {
-        this.filename = filename;
+    public void setCmdComment(String cmdComment) {
+        this.cmdComment = cmdComment;
     }
 
     public String getCommand() {

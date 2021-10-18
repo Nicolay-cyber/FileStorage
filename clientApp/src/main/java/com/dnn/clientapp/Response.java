@@ -1,10 +1,11 @@
-package com.dnn.netty.client;
+package com.dnn.clientapp;
 
 public class Response {
     private String response;
-    private String filename;
+    private String resComment;
     private long position;
     private byte[] file;
+
 
     public String getResponse() {
         return response;
@@ -14,12 +15,12 @@ public class Response {
         this.response = response;
     }
 
-    public String getFilename() {
-        return filename;
+    public String getResComment() {
+        return resComment;
     }
 
-    public void setFilename(String filename) {
-        this.filename = filename;
+    public void setResComment(String resComment) {
+        this.resComment = resComment;
     }
 
     public long getPosition() {

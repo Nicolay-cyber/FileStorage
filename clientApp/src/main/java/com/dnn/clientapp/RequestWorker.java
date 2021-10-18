@@ -1,34 +1,45 @@
-package com.dnn.netty.client;
+package com.dnn.clientapp;
 
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelHandlerContext;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Scanner;
 
 public class RequestWorker {
     Request request;
-    ChannelFuture future;
+    ChannelHandlerContext future;
 
-    public RequestWorker(ChannelFuture future) {
-        this.future = future;
+    String storagePath = "C:\\Users\\Николай\\IdeaProjects\\FileStorage\\clientApp\\src\\storage\\";
 
-        System.out.println("? - help");
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            System.out.print("> ");
-            String cmd = scanner.nextLine();
-            String[] s = cmd.split(" ");
-            try {
-                work(s);
-            } catch (ArrayIndexOutOfBoundsException e) {
-                System.out.println("The command isn't complete");
+    public RequestWorker(ChannelHandlerContext future) {
+            this.future = future;
+
+            System.out.println("? - help");
+            Scanner scanner = new Scanner(System.in);
+            while (true) {
+                System.out.print("> ");
+                String cmd = scanner.nextLine();
+                String[] s = cmd.split(" ");
+                try {
+                    work(s);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("The command isn't complete");
+                }
             }
-        }
     }
+
 
     private void work(String[] s) {
         switch (s[0]) {
+            case"?":{
+                System.out.println(
+                        ""
+                );
+                break;
+            }
             case "quit": {
                 System.exit(1);
                 break;
@@ -45,7 +56,7 @@ public class RequestWorker {
             }
             case "sendFile": {
                 byte[] buffer = new byte[1024 * 512];
-                try (RandomAccessFile accessFile = new RandomAccessFile(s[1], "r")) {
+                try (RandomAccessFile accessFile = new RandomAccessFile(storagePath + s[1], "r")) {
                     while (true) {
                         request = new Request("Receive file", s[1]);
                         request.setPosition(accessFile.getFilePointer());
@@ -62,6 +73,8 @@ public class RequestWorker {
                         }
                         buffer = new byte[1024 * 512];
                     }
+                } catch (FileNotFoundException e) {
+                    System.out.println("File isn't found");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

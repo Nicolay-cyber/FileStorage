@@ -1,4 +1,4 @@
-package com.dnn.netty.client;
+package com.dnn.clientapp;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -10,15 +10,8 @@ import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.codec.bytes.ByteArrayDecoder;
 import io.netty.handler.codec.bytes.ByteArrayEncoder;
 
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.util.Scanner;
-
-public class Client {
-    public static void main(String[] args) throws InterruptedException {
-        new Client().start();
-    }
-
+public class Network {
+    ChannelFuture future;
     public void start() throws InterruptedException {
         NioEventLoopGroup group = new NioEventLoopGroup();
         try {
@@ -27,7 +20,8 @@ public class Client {
                     .channel(NioSocketChannel.class)
                     .handler(new ChannelInitializer<NioSocketChannel>() {
                         @Override
-                        protected void initChannel(NioSocketChannel ch) throws Exception {
+                        protected void initChannel(NioSocketChannel ch) {
+
                             ch.pipeline().addLast(
                                     new LengthFieldBasedFrameDecoder(
                                             1024 * 1024 * 1024,
@@ -46,10 +40,8 @@ public class Client {
                         }
                     });
 
-            ChannelFuture future = client.connect("localhost", 8089).sync();
-
-            System.out.println("Client is ready");
-            new RequestWorker(future);
+            future = client.connect("localhost", 8089).sync();
+            System.out.println("Server's connection is ready");
             future.channel().closeFuture().sync();
         } finally {
             group.shutdownGracefully();

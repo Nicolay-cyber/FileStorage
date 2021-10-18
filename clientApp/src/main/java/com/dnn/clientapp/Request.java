@@ -1,8 +1,8 @@
-package com.dnn.netty.client;
+package com.dnn.clientapp;
 
 public class Request {
     private String command;
-    private String filename;
+    private String cmdComment;
     private byte[] file;
     private long position;
 
@@ -13,10 +13,11 @@ public class Request {
         this.command = command;
     }
 
-    public Request(String command, String filename) {
+    public Request(String command, String cmdComment) {
         this.command = command;
-        this.filename = filename;
+        this.cmdComment = cmdComment;
     }
+
 
     public long getPosition() {
         return position;
@@ -26,12 +27,12 @@ public class Request {
         this.position = position;
     }
 
-    public String getFilename() {
-        return filename;
+    public String getCmdComment() {
+        return cmdComment;
     }
 
-    public void setFilename(String filename) {
-        this.filename = filename;
+    public void setCmdComment(String cmdComment) {
+        this.cmdComment = cmdComment;
     }
 
     public String getCommand() {
