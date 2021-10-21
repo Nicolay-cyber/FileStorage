@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+
+<GridPane fx:controller="com.dnn.clientapp.WelcomeWindowController"
+          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
+    <padding>
+        <Insets top="25" right="25" bottom="10" left="25"/>
+    </padding>
+
+    <Text text="Fill in the login and password fields"
+          GridPane.columnIndex="0" GridPane.rowIndex="0"
+          GridPane.columnSpan="2"/>
+    <Label text="Login"
+           GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+    <TextField fx:id="loginField"
+               GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+    <Label text="Password"
+           GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+    <PasswordField fx:id="passwordField"
+                   GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+    <HBox spacing="10" alignment="bottom_right"
+          GridPane.columnIndex="1" GridPane.rowIndex="4">
+        <Button text="Sign in"
+                onAction="#SingInBtmAction"/>
+        <Button text="Sign up"
+                onAction="#SingUpnBtmAction"/>
+
+    </HBox>
+    <Text fx:id="infoLine"
+          GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+
+</GridPane>

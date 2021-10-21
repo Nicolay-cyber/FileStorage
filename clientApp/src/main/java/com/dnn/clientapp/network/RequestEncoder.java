@@ -1,4 +1,4 @@
-package com.dnn.clientapp;
+package com.dnn.clientapp.network;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.channel.ChannelHandlerContext;

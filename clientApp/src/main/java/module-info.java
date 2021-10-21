@@ -8,4 +8,6 @@ module com.dnn.clientapp {
 
     opens com.dnn.clientapp to javafx.fxml;
     exports com.dnn.clientapp;
+    exports com.dnn.clientapp.network;
+    opens com.dnn.clientapp.network to javafx.fxml;
 }

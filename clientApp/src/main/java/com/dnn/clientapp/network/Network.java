@@ -1,5 +1,7 @@
-package com.dnn.clientapp;
+package com.dnn.clientapp.network;
 
+import com.dnn.clientapp.Callback;
+import com.dnn.clientapp.ClientAppController;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -12,8 +14,14 @@ import io.netty.handler.codec.bytes.ByteArrayEncoder;
 
 public class Network {
     ChannelFuture future;
-    public void start() throws InterruptedException {
-        NioEventLoopGroup group = new NioEventLoopGroup();
+    NioEventLoopGroup group;
+    ResponseWorker responseWorker;
+    public void sendClientCtrl(ClientAppController clientCtrl) {
+        responseWorker.setClientCtrl(clientCtrl);
+    }
+
+    public void start(Callback callback) throws InterruptedException {
+        group = new NioEventLoopGroup();
         try {
             Bootstrap client = new Bootstrap();
             client.group(group)
@@ -35,7 +43,7 @@ public class Network {
                                     new ByteArrayEncoder(),
                                     new ResponseDecoder(),
                                     new RequestEncoder(),
-                                    new ResponseWorker()
+                                    responseWorker = new ResponseWorker(callback)
                             );
                         }
                     });
@@ -46,8 +54,17 @@ public class Network {
         } finally {
             group.shutdownGracefully();
         }
-
     }
-
+    public void fullDisconnect(){
+        closeChannel();
+        group.shutdownGracefully();
+        System.exit(1);
+    }
+    public void closeChannel(){
+        group.shutdownGracefully();
+    }
+    public void sendMsg(Request request) {
+        future.channel().writeAndFlush(request);
+    }
 
 }

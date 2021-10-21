@@ -1,10 +1,25 @@
-package com.dnn.clientapp;
+package com.dnn.clientapp.network;
 
 public class Request {
-    private String command;
-    private String cmdComment;
+    private String command = "";
+    private String cmdComment = "";
     private byte[] file;
     private long position;
+    private String nickname;
+    final public static String CHECK_USER = "Check user";
+    final public static String REGISTER = "Register user";
+    final public static String HI = "Hi";
+    final public static String QUIT = "Quit";
+    final public static String SHOW_ALL_FILES = "Show all files";
+    final public static String DELETE = "Delete";
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
     public Request() {
     }

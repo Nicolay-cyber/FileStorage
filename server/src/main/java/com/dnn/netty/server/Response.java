@@ -1,10 +1,25 @@
 package com.dnn.netty.server;
 
-public class Response {
+import java.util.ArrayList;
+
+public class Response<T> {
     private String response;
     private String resComment;
     private long position;
     private byte[] file;
+    private ArrayList<T> objects;
+
+    public ArrayList<T> getObjects() {
+        return objects;
+    }
+
+    public void setObjects(ArrayList<T> objects) {
+        this.objects = objects;
+    }
+
+    final public static String USER_IS_EXIST = "User is exist";
+    final public static String SUCCESS_WAS_REGISTERED = "User was registered successfully";
+    final public static String RECEIVE_LIST_OF_FILES = "Receive list of files";
 
     public Response() {
     }

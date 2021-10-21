@@ -1,11 +1,25 @@
-package com.dnn.clientapp;
+package com.dnn.clientapp.network;
 
-public class Response {
+import java.util.ArrayList;
+
+public class Response<T> {
+    final public static String USER_IS_EXIST = "User is exist";
+    final public static String USER_WAS_REGISTERED = "User was registered successfully";
+    final public static String RECEIVE_LIST_OF_FILES = "Receive list of files";
+
     private String response;
     private String resComment;
     private long position;
     private byte[] file;
+    private ArrayList<T> objects;
 
+    public ArrayList<T> getObjects() {
+        return objects;
+    }
+
+    public void setObjects(ArrayList<T> objects) {
+        this.objects = objects;
+    }
 
     public String getResponse() {
         return response;
