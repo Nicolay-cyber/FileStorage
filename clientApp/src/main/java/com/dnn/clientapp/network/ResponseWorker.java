@@ -10,12 +10,13 @@ import javafx.application.Platform;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-public class ResponseWorker extends SimpleChannelInboundHandler<Response> {
+public class ResponseWorker extends SimpleChannelInboundHandler<Response<Object>> {
     private final String storagePath = "C:\\Users\\Николай\\IdeaProjects\\FileStorage\\clientApp\\src\\storage\\";
-    private Response res;
+    private Response<Object> res;
     private ChannelHandlerContext ctx;
     private Callback callback;
     private ClientAppController clientCtrl;
+
     public ResponseWorker(Callback callback) {
         this.callback = callback;
     }
@@ -32,7 +33,7 @@ public class ResponseWorker extends SimpleChannelInboundHandler<Response> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Response res) {
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             if (callback != null) {
                 try {
                     callback.callback(res);
@@ -59,16 +60,16 @@ public class ResponseWorker extends SimpleChannelInboundHandler<Response> {
                     break;
                 }
                 case "File was received successfully":
-                case "File was deleted successfully":{
+                case "File was deleted successfully": {
                     clientCtrl.work(Commands.SHOW_ALL_FILES.get());
                     break;
                 }
-                case Response.RECEIVE_LIST_OF_FILES:{
+                case Response.RECEIVE_LIST_OF_FILES: {
                     clientCtrl.fileArea.getChildren().clear();
-                    for (Object fileName: res.getObjects()){
+                    for (Object fileName : res.getObjects()) {
                         clientCtrl.addFileToFileArea(String.valueOf(fileName));
                     }
-                    if (res.getObjects().isEmpty()){
+                    if (res.getObjects().isEmpty()) {
                         clientCtrl.showDefaultTextInFileArea();
                     }
                     break;
@@ -82,21 +83,22 @@ public class ResponseWorker extends SimpleChannelInboundHandler<Response> {
                     try (RandomAccessFile accessFile = new RandomAccessFile(storagePath + res.getResComment(), "rw")) {
                         accessFile.seek(res.getPosition());
                         accessFile.write(res.getFile());
-                        clientCtrl.addText("File", res.getResComment(),"is received successfully");
+                        clientCtrl.addText("File " + res.getResComment() + " is received successfully");
                         System.out.printf("File %s is received%n", res.getResComment());
                     } catch (Exception e) {
                         e.printStackTrace();
-                        clientCtrl.addText("Exception while receiving of the file", res.getResComment());
+                        clientCtrl.addText("Exception while receiving of the file " + res.getResComment());
                         System.out.println("Exception while receiving of the file" + res.getResComment());
                     }
                     break;
                 }
                 case "Hi": {
-                    clientCtrl.addText("The server greeted you", res.getResComment());
+                    clientCtrl.addText("The server greeted you " + res.getResComment());
                     System.out.println("The server greeted you");
                     break;
                 }
-                default:break;
+                default:
+                    break;
             }
         });
     }

@@ -33,7 +33,7 @@ public class ClientAppController implements Initializable {
     public Label defaultFileAreaText;
     private Network network;
     private String nickName;
-    private Response response;
+    private Response<Object> response;
     private Request request = new Request();
     private String storagePath = "C:\\Users\\Николай\\IdeaProjects\\FileStorage\\clientApp\\src\\storage\\";
 
@@ -46,7 +46,6 @@ public class ClientAppController implements Initializable {
     }
 
     public void sendMsg(ActionEvent actionEvent) {
-        addClientText(cmdLine.getText());
         try {
             work(cmdLine.getText());
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -172,7 +171,7 @@ public class ClientAppController implements Initializable {
             try {
                 network.start((args) -> {
                     response = (Response) args[0];
-                    addText("Server's response:", response.getResponse());
+                    addText("Server's response: " + response.getResponse());
                     System.out.println();
                 });
             } catch (InterruptedException e) {
@@ -203,10 +202,8 @@ public class ClientAppController implements Initializable {
         );
     }
 
-    public void addText(String... s) {
-        for (String msgPart : s) {
-            cmdArea.appendText(" " + msgPart + " ");
-        }
+    public void addText(String s) {
+        cmdArea.appendText(s);
         cmdArea.appendText("\n");
     }
 
