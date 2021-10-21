@@ -47,7 +47,6 @@ public class ClientAppController implements Initializable {
 
     public void sendMsg(ActionEvent actionEvent) {
         addClientText(cmdLine.getText());
-
         try {
             work(cmdLine.getText());
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -67,8 +66,11 @@ public class ClientAppController implements Initializable {
     }
 
     public void work(String c) {
+
         String[] s = c.split(" ");
         String cmd = s[0];
+        addClientText(c);
+
         switch (Commands.get(cmd)) {
             case INFO: {
                 JOptionPane.showMessageDialog(
@@ -152,13 +154,11 @@ public class ClientAppController implements Initializable {
                 }
                 break;
             }
-            default:
+            default:{
                 addText("Unknown command");
+                break;
+            }
         }
-        if (!request.getCommand().equals("")) {
-            addClientText(request.getCommand());
-        }
-        request.setCommand("");
     }
 
 
@@ -188,30 +188,13 @@ public class ClientAppController implements Initializable {
             fileArea.getChildren().add(button);
             ContextMenu cm = new ContextMenu();
             MenuItem deleteFile = new MenuItem("Delete");
-            deleteFile.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    work(Commands.DELETE.get() + " " + fileName);
-                }
-            });
+            deleteFile.setOnAction(actionEvent -> work(Commands.DELETE.get() + " " + fileName));
             cm.getItems().add(deleteFile);
             MenuItem downloadFile = new MenuItem("Download");
-            downloadFile.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    System.out.println(fileName);
-                    work(Commands.GET_FILE.get() + " " + fileName);
-                }
-            });
+            downloadFile.setOnAction(actionEvent -> work(Commands.GET_FILE.get() + " " + fileName));
             cm.getItems().add(downloadFile);
 
-            button.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-
-                @Override
-                public void handle(MouseEvent t) {
-                    cm.show(button, t.getScreenX(), t.getScreenY());
-                }
-            });
+            button.addEventHandler(MouseEvent.MOUSE_CLICKED, t -> cm.show(button, t.getScreenX(), t.getScreenY()));
         });
     }
 
@@ -233,7 +216,7 @@ public class ClientAppController implements Initializable {
         cmdArea.appendText("\n");
     }
 
-    private final javafx.event.EventHandler<WindowEvent> closeEventHandler = new javafx.event.EventHandler<WindowEvent>() {
+    private final javafx.event.EventHandler<WindowEvent> closeEventHandler = new javafx.event.EventHandler<>() {
         @Override
         public void handle(WindowEvent event) {
             network.fullDisconnect();
@@ -250,15 +233,15 @@ public class ClientAppController implements Initializable {
         request.setCommand(Request.SHOW_ALL_FILES);
     }
 
-    public void exitIsClicked(ActionEvent actionEvent) {
+    public void exitIsClicked() {
         work(Commands.QUIT.get());
     }
 
-    public void showCommandList(ActionEvent actionEvent) {
+    public void showCommandList() {
         work(Commands.INFO.get());
     }
 
-    public void changeProfile(ActionEvent actionEvent) {
+    public void changeProfile() {
         Platform.runLater(() -> {
             try {
                 ((Stage) fileArea.getScene().getWindow()).close();

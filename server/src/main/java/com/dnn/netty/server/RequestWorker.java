@@ -28,7 +28,7 @@ public class RequestWorker extends SimpleChannelInboundHandler<Request> {
     }
 
     @Override
-    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+    public void channelInactive(ChannelHandlerContext ctx) {
         System.out.println(nickname + " is inactive");
     }
 
@@ -46,14 +46,11 @@ public class RequestWorker extends SimpleChannelInboundHandler<Request> {
     private void work(String reqCommand) throws IOException {
         String storagePath = "C:\\Users\\Николай\\IdeaProjects\\FileStorage\\server\\src\\storage\\";
         switch (reqCommand) {
-            case Request.SHOW_ALL_FILES:
-            case "":{
-                ArrayList<String> fileList = new ArrayList<String>();
+            case Request.SHOW_ALL_FILES:{
+                ArrayList<String> fileList = new ArrayList<>();
                 try (Stream<Path> pathStream = Files.walk(Paths.get(storagePath + nickname))) {
                     pathStream
-                            .forEach(x -> {
-                                fileList.add(String.valueOf(x.getFileName()));
-                            });
+                            .forEach(x -> fileList.add(String.valueOf(x.getFileName())));
                 }
                 fileList.remove(0);
                 response.setResponse(Response.RECEIVE_LIST_OF_FILES);
