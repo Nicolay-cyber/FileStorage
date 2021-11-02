@@ -2,34 +2,42 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<VBox fx:controller="com.dnn.clientapp.ClientAppController"
-      xmlns:fx="http://javafx.com/fxml">
+<VBox fx:id="mainBox" fx:controller="com.dnn.clientapp.ClientAppController"
+      xmlns:fx="http://javafx.com/fxml" spacing="3">
     <MenuBar>
-        <menus>
-            <Menu text="File">
-                <items>
-                    <MenuItem text="Change profile" onAction="#changeProfile"/>
-                    <MenuItem text="Exit" onAction="#exitIsClicked"/>
-                </items>
-            </Menu>
-            <Menu text="Help">
-                <items>
-                    <MenuItem text="Commands" onAction="#showCommandList"/>
-                </items>
-            </Menu>
-        </menus>
+        <Menu text="File">
+            <MenuItem text="Add file" onAction="#addFile"/>
+            <MenuItem text="Update" onAction="#update"/>
+            <MenuItem text="Profile setting" onAction="#showUserSettingWindow"/>
+            <MenuItem text="Change profile" onAction="#changeProfile"/>
+            <MenuItem text="Exit" onAction="#exitIsClicked"/>
+        </Menu>
+        <Menu text="View">
+            <CheckMenuItem text="Show command area" onAction="#showingCmdArea"/>
+        </Menu>
+        <Menu text="Help">
+            <MenuItem text="Commands" onAction="#showCommandList"/>
+        </Menu>
     </MenuBar>
-    <Label text="Files"/>
-    <ScrollPane fx:id="fileScrollPane">
-        <VBox fx:id="fileArea">
+    <!--  -->
+    <HBox spacing="5">
+        <Button text="Back" onAction="#goToPreviousFolder"/>
+        <Button text="Add fife" onAction="#addFile"/>
+        <Button text="Add folder" onAction="#addFolder"/>
+    </HBox>
+
+    <ScrollPane fx:id="fileScrollPane" VBox.vgrow="ALWAYS">
+        <VBox fx:id="fileArea" spacing="5" >
             <Label text="Here will be your files" fx:id="defaultFileAreaText"/>
         </VBox>
     </ScrollPane>
-    <Label text="Commands"/>
-        <TextArea fx:id="cmdArea" editable="false" VBox.vgrow="ALWAYS"/>
-    <HBox>
-        <TextField fx:id="cmdLine" HBox.hgrow="ALWAYS" promptText="Type command..." onAction="#sendMsg"/>
-        <Button text="Send" onAction="#sendMsg"/>
-    </HBox>
 
+    <VBox fx:id="cmdAreaBox" visible="false" maxHeight="0">
+        <TextArea fx:id="cmdArea" editable="false" VBox.vgrow="ALWAYS"/>
+        <HBox>
+            <TextField fx:id="cmdLine" HBox.hgrow="ALWAYS" promptText="Type command..." onAction="#sendMsg"/>
+            <Button text="Send" onAction="#sendMsg"/>
+        </HBox>
+    </VBox>
 </VBox>
+

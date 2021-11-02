@@ -1,5 +1,8 @@
 package com.dnn.netty.server;
 
+import com.dnn.netty.server.requestWorks.RequestDecoder;
+import com.dnn.netty.server.requestWorks.RequestWorker;
+import com.dnn.netty.server.responseWorks.ResponseEncoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -8,9 +11,6 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.codec.bytes.ByteArrayDecoder;
 import io.netty.handler.codec.bytes.ByteArrayEncoder;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class Server {
     public static void main(String[] args) throws InterruptedException {

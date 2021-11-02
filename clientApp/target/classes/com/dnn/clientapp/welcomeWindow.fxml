@@ -9,29 +9,29 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 
-<GridPane fx:controller="com.dnn.clientapp.WelcomeWindowController"
-          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
+<GridPane fx:id="mainGridPane" fx:controller="com.dnn.clientapp.WelcomeWindowController"
+          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10" >
     <padding>
         <Insets top="25" right="25" bottom="10" left="25"/>
     </padding>
 
-    <Text text="Fill in the login and password fields"
+    <Label text="Enter login and password"
           GridPane.columnIndex="0" GridPane.rowIndex="0"
           GridPane.columnSpan="2"/>
     <Label text="Login"
            GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-    <TextField fx:id="loginField"
+    <TextField fx:id="loginField" onKeyPressed="#EnterPressed"
                GridPane.columnIndex="1" GridPane.rowIndex="1"/>
     <Label text="Password"
            GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-    <PasswordField fx:id="passwordField"
+    <PasswordField fx:id="passwordField" onKeyPressed="#EnterPressed"
                    GridPane.columnIndex="1" GridPane.rowIndex="2"/>
     <HBox spacing="10" alignment="bottom_right"
           GridPane.columnIndex="1" GridPane.rowIndex="4">
-        <Button text="Sign in"
-                onAction="#SingInBtmAction"/>
-        <Button text="Sign up"
-                onAction="#SingUpnBtmAction"/>
+        <Button fx:id="signInBtn" text="Sign in"
+                onAction="#sendRequest" />
+        <Button fx:id="signUpBtn" text="Sign up"
+                onAction="#sendRequest"/>
 
     </HBox>
     <Text fx:id="infoLine"

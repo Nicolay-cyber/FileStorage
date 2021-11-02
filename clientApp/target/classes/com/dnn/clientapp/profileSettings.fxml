@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+
+<GridPane fx:controller="com.dnn.clientapp.ProfileSettingsController"
+          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
+    <padding>
+        <Insets top="25" right="25" bottom="10" left="25"/>
+    </padding>
+
+    <Label text="Login"
+           GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+    <TextField fx:id="loginField" onKeyPressed="#EnterPressed"
+               GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+    <Label text="Nickname"
+           GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+    <TextField fx:id="nicknameField" onKeyPressed="#EnterPressed"
+               GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+    <Label text="Old password"
+           GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+    <PasswordField fx:id="oldPassword" onKeyPressed="#EnterPressed"
+                   GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+    <Label text="New password"
+           GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+    <PasswordField fx:id="newPassword" onKeyPressed="#EnterPressed"
+                   GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+    <Text fx:id="infoLine" textAlignment="RIGHT"
+          GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+    <HBox spacing="10" alignment="bottom_right"
+          GridPane.columnIndex="1" GridPane.rowIndex="5">
+        <Button fx:id="sendRequest" text="OK"
+                onAction="#sendRequest"/>
+        <Button fx:id="cancel" text="Cancel"
+                onAction="#cancel"/>
+    </HBox>
+
+</GridPane>

@@ -21,16 +21,16 @@ public class Database {
         }
     }
 
-    public static String getNickByLoginAndPass(String login, String password) {
+    public static String getNickname(String clientID) {
         try {
             ResultSet rs = statement.executeQuery(String.format(
-                    "SELECT nickname FROM users WHERE login ='%s' AND password = '%s'", login, password
+                    "SELECT nickname FROM users WHERE id ='%s'", clientID
             ));
             if (rs.next()) {
                 return rs.getString("nickname");
             }
         } catch (SQLException e) {
-            System.out.println("There was error while server tried to get nickname by login and password");
+            System.out.println("There was error while server tried to get nickname by ID");
             e.printStackTrace();
         }
         return null;
@@ -38,10 +38,11 @@ public class Database {
 
     public static String registerUser(String login, String password) {
         try {
+            String nickname = "User " + ((int) (Math.random() * 1000000));
             statement.executeUpdate(String.format(
-                    "INSERT INTO users (login, password, nickname) VALUES ('%s','%s','%s')", login, password, login
+                    "INSERT INTO users (login, password, nickname) VALUES ('%s','%s','%s')", login, password, nickname
             ));
-            return getNickByLoginAndPass(login,password);
+            return getId(login,password);
         } catch (SQLException e) {
             return null;
         }
@@ -57,16 +58,18 @@ public class Database {
         }
     }
 
-    public static boolean changePassword(String nickname, String oldPassword, String newPassword) {
+    public static boolean changePassword(String clientID, String oldPassword, String newPassword) {
         try {
             ResultSet rs = statement.executeQuery(String.format(
-                    "SELECT password FROM users WHERE nickname = '%s'", nickname
+                    "SELECT password FROM users WHERE id = '%s'", clientID
             ));
-            if (rs.getString("password").equals(oldPassword)) {
-                statement.executeUpdate(String.format(
-                        "UPDATE users SET password = '%s' WHERE nickname = '%s'", newPassword, nickname
-                ));
-                return true;
+            if (rs.next()) {
+                if ((rs.getString("password")).equals(oldPassword)) {
+                    statement.executeUpdate(String.format(
+                            "UPDATE users SET password = '%s' WHERE id = '%s'", newPassword, clientID
+                    ));
+                    return true;
+                }
             }
             return false;
         } catch (SQLException e) {
@@ -75,17 +78,59 @@ public class Database {
         }
     }
 
-    public static boolean changeNickAndLogin(String oldNickname, String newNickname, String newLogin) {
+    public static String getId(String login, String password) {
         try {
+            ResultSet rs = statement.executeQuery(String.format(
+                    "SELECT id FROM users WHERE login ='%s' AND password = '%s'", login, password
+            ));
+            if (rs.next()) {
+                return rs.getString("id");
+            }
+        } catch (SQLException e) {
+            System.out.println("There was error while server tried to get id by login and password");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static boolean changeNickname(String clientId, String newNickname) {
+        try{
             statement.executeUpdate(String.format(
-                    "UPDATE users SET nickname = '%s', login = '%s' WHERE nickname = '%s'", newNickname, newLogin, oldNickname
+                    "UPDATE users SET nickname = '%s' WHERE id = '%s'", newNickname, clientId
             ));
             return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch (SQLException e){
+            System.out.println("There was error while server tried to get nickname");
             return false;
         }
     }
 
+    public static boolean changeLogin(String clientId, String newLogin) {
 
+        try{
+            statement.executeUpdate(String.format(
+                    "UPDATE users SET login = '%s' WHERE id = '%s'", newLogin, clientId
+            ));
+            return true;
+        }catch (SQLException e){
+            System.out.println("There was error while server tried to get login");
+            System.out.println(e.getMessage());
+            return false;
+        }
+
+    }
+
+    public static String checkLogin(String login) {
+        try{
+            ResultSet rs = statement.executeQuery(String.format(
+                    "SELECT id FROM users WHERE login ='%s'", login
+            ));
+            if (rs.next()) {
+                return rs.getString("id");
+            }
+        }catch (SQLException e){
+            return  null;
+        }
+        return null;
+    }
 }
