@@ -1,0 +1,65 @@
+/*.root{
+    --madiam-sea: #4e858a;
+    --darkSea: #2b575e;
+    --while: #d6d8d9;
+}*/
+.button {
+    -fx-background-color: #2b575e;
+    -fx-text-fill: #d6d8d9;
+}
+
+.button:hover {
+    -fx-background-color: #d2852d;
+}
+
+.root {
+    -fx-background-color: #9bcbc8;
+}
+
+#fileArea {
+    -fx-background-color: #a9acad;
+}
+
+.label {
+    -fx-text-fill: #214549;
+    -fx-font-family: "Calibri Light";
+
+    -fx-font-size: 14;
+}
+
+.text-field {
+    -fx-background-color: #4e858a;
+    -fx-text-fill: #d6d8d9;
+    -fx-font-size: 14;
+    -fx-font-family: "Calibri Light";
+    -fx-border-width: 2px;
+}
+
+.text-field:hover {
+    -fx-background-color: #d2852d;
+}
+
+.text-field:focused {
+    -fx-border-color: #d2852d;
+}
+
+.text-id {
+    -fx-font-family: "Calibri Light";
+    -fx-text-fill: #214549;
+}
+
+/*{
+
+    --darkSea: #2b575e;
+}
+{
+    --madiam-sea: #4e858a;
+}
+
+{
+    --sunny: #d2ab2d;
+}
+{
+    --while: #d6d8d9;
+}*/
+

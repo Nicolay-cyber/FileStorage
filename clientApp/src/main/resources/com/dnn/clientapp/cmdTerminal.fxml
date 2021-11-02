@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="mainBox" fx:controller="com.dnn.clientapp.ClientAppController"
+      xmlns:fx="http://javafx.com/fxml">
+    <VBox fx:id="cmdAreaBox" visible="false" maxHeight="0">
+        <TextArea fx:id="cmdArea" editable="false" VBox.vgrow="ALWAYS"/>
+        <HBox>
+            <TextField fx:id="cmdLine" HBox.hgrow="ALWAYS" promptText="Type command..." onAction="#sendMsg"/>
+            <Button text="Send" onAction="#sendMsg"/>
+        </HBox>
+    </VBox>
+
+</VBox>
